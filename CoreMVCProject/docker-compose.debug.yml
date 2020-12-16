@@ -1,5 +1,5 @@
 services:
-  webapp:
+  coreproject:
     image: mcr.microsoft.com/dotnet/core/samples:aspnetapp
     ports:
       - 80
