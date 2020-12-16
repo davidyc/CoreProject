@@ -1,4 +1,5 @@
 ﻿using CoreProject.Models;
+using CoreProject.Models.TestDB.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +13,12 @@ namespace CoreProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly MSSQLTestContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MSSQLTestContext context)
         {
             _logger = logger;
+            _db = context;
         }
 
         public IActionResult Index()
