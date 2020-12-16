@@ -1,6 +1,6 @@
 services:
 
-  adminer:
+  adminer_core:
     image: adminer
     restart: always
     ports:
