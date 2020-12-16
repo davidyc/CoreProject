@@ -1,4 +1,23 @@
-services:
+
+version: '3.4'
+
+services: 
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+       - 8085:8080
+  db:
+    image: postgres
+    hostname: db    
+    restart: always
+    environment:
+      POSTGRES_USER: davidyc
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: Core_DB
+    ports:
+      - 5432:5432
+
   coreproject:
     image: mcr.microsoft.com/dotnet/core/samples:aspnetapp
     ports:
