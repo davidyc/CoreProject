@@ -1,0 +1,21 @@
+version: '3.4'
+
+services: 
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+          - 8085:8080
+    db:
+        image: "mcr.microsoft.com/mssql/server:2017-latest"
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=1Secure*Password1
+
+    coreproject:
+        image: ${DOCKER_REGISTRY-}coreproject
+        build:
+          context: .
+          dockerfile: CoreProject/Dockerfile
+        depends_on:
+          - db
