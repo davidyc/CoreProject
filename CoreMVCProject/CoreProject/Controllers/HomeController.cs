@@ -13,12 +13,12 @@ namespace CoreProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly MSSQLTestContext _db;
+     //   private readonly MSSQLTestContext _db;
 
-        public HomeController(ILogger<HomeController> logger, MSSQLTestContext context)
+        public HomeController(ILogger<HomeController> logger)//, MSSQLTestContext context)
         {
             _logger = logger;
-            _db = context;
+           // _db = context;
         }
 
         public IActionResult Index()
@@ -26,7 +26,7 @@ namespace CoreProject.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
