@@ -21,12 +21,13 @@ services:
   coreproject:
     image: mcr.microsoft.com/dotnet/core/samples:aspnetapp
     ports:
-      - 80
-      - 443
+      - 80:80
+      - 443:443
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_URLS=http://*:1717
     volumes:
       - ~/.aspnet/https:/https:ro
