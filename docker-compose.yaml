@@ -1,19 +1,30 @@
 services:
 
-  adminer_core:
+  adminer_local:
     image: adminer
     restart: always
     ports:
       - 8085:8080
 
-  db:
+  dbMSSQL:
         image: "mcr.microsoft.com/mssql/server:2017-latest"
         environment:
           - ACCEPT_EULA=Y
           - SA_PASSWORD=1Secure*Password1
 
-  dbmysql:
+  dbMySql:
     image: mysql:5.6
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
+
+  dbPostgresLocal:
+    image: postgres
+    hostname: db    
+    restart: always
+    environment:
+      POSTGRES_USER: davidyc
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: Core_DB
+    ports:
+      - 5432:5432
