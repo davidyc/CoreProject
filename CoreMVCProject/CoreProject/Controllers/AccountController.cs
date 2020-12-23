@@ -11,9 +11,11 @@ using CoreProject.Models.ViewModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreProject.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -150,22 +152,21 @@ namespace CoreProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
-
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid)
@@ -181,13 +182,16 @@ namespace CoreProject.Controllers
             }
             return View(model);
         }
+
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
