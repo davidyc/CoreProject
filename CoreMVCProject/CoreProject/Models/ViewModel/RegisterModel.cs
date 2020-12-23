@@ -8,15 +8,15 @@ namespace CoreProject.Models.ViewModel
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "Не указан Email")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "Type Email")]
+        public string Login { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Required(ErrorMessage = "Type password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Пароль введен неверно")]
+        [Compare("Password", ErrorMessage = "Type password")]
         public string ConfirmPassword { get; set; }
     }
 }

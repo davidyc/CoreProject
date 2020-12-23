@@ -8,10 +8,10 @@ namespace CoreProject.Models.ViewModel
 {
     public class LoginModel
     {
-        [Required(ErrorMessage = "Не указан логин")]
+        [Required(ErrorMessage = "Type login")]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Required(ErrorMessage = "Type password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

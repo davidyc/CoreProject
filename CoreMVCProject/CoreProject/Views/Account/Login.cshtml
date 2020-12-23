@@ -1,6 +1,6 @@
 ﻿@model CoreProject.Models.ViewModel.LoginModel
 
-<h2>Вход на сайт</h2>
+<h2>Login</h2>
 
 <a asp-action="Register" asp-controller="Account">Регистрация</a>
 
@@ -13,12 +13,12 @@
             <span asp-validation-for="Login" />
         </div>
         <div class="form-group">
-            <label asp-for="Password">Введите пароль</label>
+            <label asp-for="Password">Password</label>
             <input asp-for="Password" />
             <span asp-validation-for="Password" />
         </div>
         <div class="form-group">
-            <input type="submit" value="Войти" class="btn btn-outline-dark" />
+            <input type="submit" value="Login" class="btn btn-outline-dark" />
         </div>
     </div>
 </form>
