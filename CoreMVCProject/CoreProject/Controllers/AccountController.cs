@@ -12,10 +12,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using CoreProject.Models.AppModel;
 
 namespace CoreProject.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "davidyc")]
     public class AccountController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -42,6 +43,7 @@ namespace CoreProject.Controllers
 
             var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
+         
             if (user == null)
             {
                 return NotFound();
@@ -61,10 +63,12 @@ namespace CoreProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,login,Email,Password")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Login,Email,Password")] User user)
         {
             if (ModelState.IsValid)
             {
+                user.Role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "user");
+                user.RoleId = user.Role.Id;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,7 +97,7 @@ namespace CoreProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,login,Email,Password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Email,Password")] User user)
         {
             if (id != user.Id)
             {
@@ -171,10 +175,11 @@ namespace CoreProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.login == model.Login && u.Password == model.Password);
+                User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+                user.Role = await _context.Roles.FirstOrDefaultAsync(u => u.Id == user.RoleId);
                 if (user != null)
                 {
-                    await Authenticate(model.Login);
+                    await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -202,7 +207,14 @@ namespace CoreProject.Controllers
                     _context.Users.Add(new User { Email = model.Email, Password = model.Password });
                     await _context.SaveChangesAsync();
 
-                    await Authenticate(model.Email);
+                    Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                    if (userRole != null)
+                        user.Role = userRole;
+
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+
+                    await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -212,17 +224,20 @@ namespace CoreProject.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
             };
+
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
