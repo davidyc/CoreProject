@@ -13,11 +13,20 @@ namespace CoreProject.Models
         [StringLength(35)]
         [Required]
         public string Login { get; set; }
-        [StringLength(30)]
-        [Required]
-        public string Email { get; set; }
+        [StringLength(30)]       
+        [EmailAddress]
+        public string Email { get; set; }    
+        [Phone]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
+        
+        [Display(Name = "Born date")]
+        public DateTime? DateBorn { get; set; }
+        public DateTime? LastLogin { get; set; }
+
         [StringLength(50)]
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public int? RoleId { get; set; }
         public Role Role { get; set; }

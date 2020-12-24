@@ -58,34 +58,35 @@ namespace CoreProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Email,PhoneNumber,DateBorn")] User user)
         {
-            if (id != user.Id)
+            var userDB = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            userDB.DateBorn = user.DateBorn;
+            userDB.Email = user.Email;
+            userDB.PhoneNumber = user.PhoneNumber;           
+          
+            try
             {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(userDB);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(user.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+           
         }
 
         [HttpGet]
