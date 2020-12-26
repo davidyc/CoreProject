@@ -129,21 +129,13 @@ namespace CoreProject.Controllers
         }
 
         public IActionResult ChangePassword()
-        {
-            var user = _context.Users
-                 .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+        {                        
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel password)
+        public async Task<IActionResult> ChangePassword(PasswordChangeViewModel model)
         {
             var user = _context.Users
                 .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
@@ -153,14 +145,20 @@ namespace CoreProject.Controllers
                 return NotFound();
             }
 
-            if(user.Password != password.OldPassword)
+            if (user.Password != model.OldPassword)
             {
-                ModelState.AddModelError("OldPassword", $"Old password is not currect");
-                return View(user);
-            }          
+                ModelState.AddModelError("", "Old password is not correct");
+                return View(model);
+            }
+
+            if (model.ConfirmPassword != model.Password)
+            {
+                ModelState.AddModelError("", "Passwords in not equels");
+                return View(model);
+            }
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            user.Password = password.NewPassword;
+            user.Password = model.Password;
             await _context.SaveChangesAsync();
             return RedirectToAction("Login", "Account");
         }
