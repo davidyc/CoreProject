@@ -21,18 +21,20 @@ namespace CoreProject.Models
             string adminRoleName = "davidyc";
             string userRoleName = "user";
 
-            string adminEmail = "davydovsergey.sd@gmail.com";
-            string adminPassword = "123456";
+            //string adminEmail = "davydovsergey.sd@gmail.com";
+            //string adminPassword = "123456";
 
-  
+
             Role adminRole = new Role { Id = 1, Name = adminRoleName };
             Role userRole = new Role { Id = 2, Name = userRoleName };
-
-
-            User adminUser = new User { Id = 1, Login="davidyc", Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
-
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
-            modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+
+
+            //User adminUser = new User { Id = 1, Login = "davidyc", Email = adminEmail, Password = adminPassword };
+            //adminRole.Users.Add(adminUser);
+            //adminUser.Roles.Add(adminRole);
+            //modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -176,12 +176,13 @@ namespace CoreProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
-                user.Role = await _context.Roles.FirstOrDefaultAsync(u => u.Id == user.RoleId);
+                User user = await _context.Users.Include(v=>v.Roles).FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+              
                 if (user != null)
                 {
+                    user.LastLogin = DateTime.UtcNow;
                     await Authenticate(user);
-
+                    await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -205,25 +206,26 @@ namespace CoreProject.Controllers
                 User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
                 if (user == null)
                 {
-                    _context.Users.Add(new User { Login = model.Login, Password = model.Password });
-                    await _context.SaveChangesAsync();
-
+                    user = new User { Login = model.Login, Password = model.Password };
                     Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
-                        user.Role = userRole;
-
+                    {
+                        user.Roles.Add(userRole);
+                        userRole.Users.Add(user);
+                    }
+                        
+                    user.LastLogin = DateTime.UtcNow;
                     _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();       
 
                     await Authenticate(user);
-
                     return RedirectToAction("Index", "Home");
                 }
                 else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", $"{model.Login} already use another user");
             }
 
-            ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            ModelState.AddModelError("", "Inccorect login or password");
             return View(model);
         }
 
@@ -231,9 +233,13 @@ namespace CoreProject.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login)                
             };
+
+            foreach (var item in user.Roles)
+            {
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, item.Name));
+            }
 
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 

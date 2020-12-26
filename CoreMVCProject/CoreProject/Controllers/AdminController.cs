@@ -52,12 +52,19 @@ namespace CoreProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Login,Email,Password")] User user)
+        public async Task<IActionResult> Create([Bind("Id,PhoneNumber,Login,Email,Password")] User user)
         {
+            var userDB = _context.Users.FirstOrDefault(u => u.Login == user.Login);
+            if (userDB == null)
+            {
+                  return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                user.Role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "user");
-                user.RoleId = user.Role.Id;
+              //  user.Role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "user");
+                //user.RoleId = user.Role.Id;
+
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -83,7 +90,7 @@ namespace CoreProject.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Email,Password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,PhoneNumber,Email,Password")] User user)
         {
             if (id != user.Id)
             {

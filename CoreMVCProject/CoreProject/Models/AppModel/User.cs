@@ -28,7 +28,10 @@ namespace CoreProject.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public int? RoleId { get; set; }
-        public Role Role { get; set; }
+        public List<Role> Roles { get; set; }
+        public User()
+        {
+            Roles = new List<Role>(); 
+        }
     }
 }
