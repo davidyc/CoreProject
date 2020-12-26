@@ -1,4 +1,5 @@
 ﻿using CoreProject.Models;
+using CoreProject.Models.AppModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace CoreProject.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var user = await _context.Users.Include(x=>x.Roles)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (user == null)
@@ -55,16 +56,21 @@ namespace CoreProject.Controllers
         public async Task<IActionResult> Create([Bind("Id,PhoneNumber,Login,Email,Password")] User user)
         {
             var userDB = _context.Users.FirstOrDefault(u => u.Login == user.Login);
-            if (userDB == null)
+            if (userDB != null)
             {
-                  return NotFound();
+                ModelState.AddModelError("",$"{user.Login} already use another user");
+                return View(user);
             }
 
             if (ModelState.IsValid)
             {
-              //  user.Role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "user");
-                //user.RoleId = user.Role.Id;
-
+                Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                if (userRole != null)
+                {
+                    user.Roles.Add(userRole);
+                    userRole.Users.Add(user);
+                }
+                
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +96,7 @@ namespace CoreProject.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,PhoneNumber,Email,Password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,PhoneNumber,DateBorn,Email,Password")] User user)
         {
             if (id != user.Id)
             {
@@ -101,7 +107,14 @@ namespace CoreProject.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    var userDB = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+                    userDB.Login = user.Login;
+                    userDB.Password = user.Password;
+                    userDB.PhoneNumber = user.PhoneNumber;
+                    userDB.Email = user.Email;
+                    userDB.DateBorn = user.DateBorn;
+
+                    _context.Update(userDB);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
