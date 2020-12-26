@@ -2,17 +2,19 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+$(document).ready(function () {
+    $('#UserMainInfoDiv > a').hide()   
+    $('#UserAddInfoDiv > a').hide()
+});
 
 $(document).ready(function () {
-    $("#UserMainInfoDiv > h4").click(function () {
-        $('#UserMainInfoDiv > dl').slideToggle(1000)
+    $("#UserMainInfoDiv").click(function () {
+        $('#UserMainInfoDiv > a').slideToggle(500)
     });
 });
 
 $(document).ready(function () {
-    $("#UserAddInfoDiv > h4").click(function () {
-        $('#UserAddInfoDiv > dl').slideToggle(1000)
-        $('#UserAddInfoDiv > a').slideToggle(1000)
+    $("#UserAddInfoDiv").click(function () {
+        $('#UserAddInfoDiv > a').slideToggle(500)
     });
 });
