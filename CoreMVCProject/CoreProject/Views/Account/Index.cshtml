@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details about user</h1>
+<h1>Details about @User.Identity.Name</h1>
 
-<div>
-    <h4>User info</h4>
+<div id="UserMainInfoDiv">
+    <h4>User Main Info</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -17,6 +17,19 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Login)
         </dd>
+        <dt class="col-sm-2">
+            <a class="btn btn-primary" asp-action="ChangeLogin" asp-route-id="@Model.Id">Change Login</a>
+        </dt>
+        <dd class="col-sm-6">
+            <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@Model.Id">Change Password</a>
+        </dd>
+    </dl>
+</div>
+
+<div id="UserAddInfoDiv">
+    <h4>User Additional Info</h4>
+    <hr />
+    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
@@ -34,10 +47,11 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateBorn)
-        </dd>
+        </dd> 
     </dl>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
 </div>

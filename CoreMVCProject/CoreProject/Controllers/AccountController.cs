@@ -85,10 +85,85 @@ namespace CoreProject.Controllers
                 {
                     throw;
                 }
-            }
-           
+            }           
         }
 
+        public IActionResult ChangeLogin()
+        {
+           var user =  _context.Users
+                .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);    
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeLogin(string Login)
+        {
+            var user = _context.Users
+                .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
+
+            if (user == null)
+            {               
+                return NotFound();
+            }
+
+            var hasNane = _context.Users
+                .FirstOrDefault(m => m.Login == Login);
+
+            if (hasNane != null)
+            {
+                ModelState.AddModelError("", $"Login {Login} already use another user");
+                return View(user);
+            }
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            user.Login = Login;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Login", "Account");          
+        }
+
+        public IActionResult ChangePassword()
+        {
+            var user = _context.Users
+                 .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel password)
+        {
+            var user = _context.Users
+                .FirstOrDefault(m => m.Login == HttpContext.User.Identity.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if(user.Password != password.OldPassword)
+            {
+                ModelState.AddModelError("OldPassword", $"Old password is not currect");
+                return View(user);
+            }          
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            user.Password = password.NewPassword;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Login", "Account");
+        }
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -99,7 +174,7 @@ namespace CoreProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -125,7 +200,7 @@ namespace CoreProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {

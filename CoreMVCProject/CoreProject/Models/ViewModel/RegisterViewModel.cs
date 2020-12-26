@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreProject.Models.ViewModel
 {
-    public class RegisterModel
+    public class RegisterViewModel
     {
         [Required(ErrorMessage = "Type Email")]
         public string Login { get; set; }

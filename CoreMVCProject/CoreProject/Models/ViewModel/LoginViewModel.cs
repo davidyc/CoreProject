@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreProject.Models.ViewModel
 {
-    public class LoginModel
+    public class LoginViewModel
     {
         [Required(ErrorMessage = "Type login")]
         public string Login { get; set; }
