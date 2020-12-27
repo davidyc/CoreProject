@@ -16,6 +16,7 @@ using CoreProject.Models.AppModel;
 
 namespace CoreProject.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;

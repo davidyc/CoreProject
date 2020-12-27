@@ -18,22 +18,15 @@ namespace CoreProject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            string adminRoleName = "davidyc";
+            string davidycRolename = "davidyc";
+            string adminRoleName = "admin";
             string userRoleName = "user";
 
-            //string adminEmail = "davydovsergey.sd@gmail.com";
-            //string adminPassword = "123456";
-
-
-            Role adminRole = new Role { Id = 1, Name = adminRoleName };
-            Role userRole = new Role { Id = 2, Name = userRoleName };
-            modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
-
-
-            //User adminUser = new User { Id = 1, Login = "davidyc", Email = adminEmail, Password = adminPassword };
-            //adminRole.Users.Add(adminUser);
-            //adminUser.Roles.Add(adminRole);
-            //modelBuilder.Entity<User>().HasData(new User[] { adminUser });
+            Role davidycRole = new Role { Id = 1, Name = davidycRolename };
+            Role adminRole = new Role { Id = 2, Name = adminRoleName };
+            Role userRole = new Role { Id = 3, Name = userRoleName };
+            modelBuilder.Entity<Role>().HasData(new Role[] { davidycRole, adminRole, userRole });
+          
 
             base.OnModelCreating(modelBuilder);
         }

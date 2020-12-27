@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CoreProject.Controllers
 {
-    [Authorize(Roles = "davidyc")]
+    [Authorize(Roles = "davidyc, admin")]
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;
