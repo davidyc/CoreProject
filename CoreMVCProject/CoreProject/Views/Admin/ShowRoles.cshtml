@@ -1,0 +1,54 @@
+﻿@model IEnumerable<CoreProject.Models.ViewModel.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>List roles</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+            <th>
+               Action
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            @if (item.HasRole)
+            {
+                <td>
+                    <form asp-action="RemoveRoles">
+                        <input type="hidden" value="@item.UserID" name="ID" />
+                        <input type="hidden" value="@item.RoleName" name="RoleName" />
+                        <input type="submit" value="Remove" class="btn btn-danger" />
+                    </form>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <form asp-action="AddRoles">
+                        <input type="hidden" value="@item.UserID" name="ID" />
+                        <input type="hidden" value="@item.RoleName" name="RoleName" />
+                        <input type="submit" value="Add" class="btn btn-success"/>
+                    </form>           
+                </td>
+            }
+
+        </tr>
+}
+    </tbody>
+</table>
+
+

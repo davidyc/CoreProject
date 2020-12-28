@@ -1,5 +1,6 @@
 ﻿using CoreProject.Models;
 using CoreProject.Models.AppModel;
+using CoreProject.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -159,6 +160,65 @@ namespace CoreProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+        public async Task<IActionResult> ShowRoles(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var roles = _context.Roles.Where(x => x.Id != 1).ToList();
+
+            var user = await _context.Users.Include(u=>u.Roles)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRoles = new List<UserRolesViewModel>();
+            foreach (var role in roles)
+            {
+                userRoles.Add(new UserRolesViewModel()
+                {
+                    UserID = id,
+                    RoleName = role.Name,
+                    HasRole = user.Roles.Contains(role)
+                });
+            }
+
+            return View(userRoles);
+        }
+
+        [HttpPost, ActionName("AddRoles")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRoles(int id, string RoleName)
+        {
+            var user = await _context.Users.Include(r => r.Roles).FirstOrDefaultAsync(x => x.Id == id);
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == RoleName);
+
+            user.Roles.Add(role);
+            role.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ShowRoles", new { id = id });
+        }
+
+        [HttpPost, ActionName("RemoveRoles")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveRoles(int id, string RoleName)
+        {            
+            var user = await _context.Users.Include(r=>r.Roles).FirstOrDefaultAsync(x=>x.Id == id);
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == RoleName);
+
+            user.Roles.Remove(role);
+            role.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ShowRoles", new { id = id });
+        }
+
+
 
         private bool UserExists(int id)
         {
