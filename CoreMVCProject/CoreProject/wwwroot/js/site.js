@@ -5,6 +5,7 @@
 $(document).ready(function () {
     $('#UserMainInfoDiv > a').hide()   
     $('#UserAddInfoDiv > a').hide()
+    $('#URLInput').hide()
 });
 
 $(document).ready(function () {
@@ -18,3 +19,11 @@ $(document).ready(function () {
         $('#UserAddInfoDiv > a').slideToggle(500)
     });
 });
+
+
+$(document).ready(function () {
+    $("#ExternalInput").click(function () {
+        $('#URLInput').slideToggle(500)
+    });
+});
+

@@ -25,6 +25,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About me</a>
                         </li>
 
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MyProjects" asp-action="Index">Projects</a>
+                            </li>
+                        }
+
                         @if (User.IsInRole("admin"))
                         {
                             <li class="nav-item">
@@ -37,7 +45,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="RolesManage" asp-action="Index">Roles Manage</a>
                             </li>
                         }
-
 
 
                         @if (User.Identity.IsAuthenticated)
