@@ -5,7 +5,16 @@
 $(document).ready(function () {
     $('#UserMainInfoDiv > a').hide()   
     $('#UserAddInfoDiv > a').hide()
+    var checked = $('#EditURLDIVCB').is(':checked');
+    if (checked) {
+        $('#URLINPUTDETAIL').show();
+    }
+    else {
+        $('#URLINPUTDETAIL').hide();
+    }
     $('#URLInput').hide()
+
+    
 });
 
 $(document).ready(function () {
@@ -26,4 +35,16 @@ $(document).ready(function () {
         $('#URLInput').slideToggle(500)
     });
 });
+
+
+$(document).ready(function () {
+    $("#EditURLDIVCB").click(function () {
+        $('#URLINPUTDETAIL').slideToggle(500)
+        var checked = $('#EditURLDIVCB').is(':checked');
+        if (!checked) {
+            $('#URLINPUTDETAILinput').val("");
+        }       
+    });
+});
+
 
