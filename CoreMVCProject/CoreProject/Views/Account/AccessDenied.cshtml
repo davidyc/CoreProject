@@ -1,0 +1,18 @@
+﻿@model CoreProject.Models.User
+
+@{
+    ViewData["Title"] = "AccessDenied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>
+    You are not authorized to perform this action.
+</h1>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to main Page</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
