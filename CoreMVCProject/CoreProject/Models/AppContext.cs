@@ -12,6 +12,7 @@ namespace CoreProject.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<MyProject> MyProjects { get; set; }
+        public DbSet<UserAdditionalInfo> UserAdditionalInfos { get; set; }
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
             Database.EnsureCreated();
