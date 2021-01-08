@@ -1,5 +1,4 @@
 ﻿using CoreProject.Models;
-using CoreProject.Models.TestDB.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
