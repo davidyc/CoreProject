@@ -24,7 +24,7 @@ namespace CoreProject.Controllers
         // GET: MyProjects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MyProject.ToListAsync());
+            return View(await _context.MyProjects.ToListAsync());
         }
 
         // GET: MyProjects/Details/5
@@ -35,7 +35,7 @@ namespace CoreProject.Controllers
                 return NotFound();
             }
 
-            var myProject = await _context.MyProject
+            var myProject = await _context.MyProjects
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (myProject == null)
             {
@@ -79,7 +79,7 @@ namespace CoreProject.Controllers
                 return NotFound();
             }
 
-            var myProject = await _context.MyProject.FindAsync(id);
+            var myProject = await _context.MyProjects.FindAsync(id);
             if (myProject == null)
             {
                 return NotFound();
@@ -132,7 +132,7 @@ namespace CoreProject.Controllers
                 return NotFound();
             }
 
-            var myProject = await _context.MyProject
+            var myProject = await _context.MyProjects
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (myProject == null)
             {
@@ -148,15 +148,15 @@ namespace CoreProject.Controllers
         [Authorize(Roles = "davidyc")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var myProject = await _context.MyProject.FindAsync(id);
-            _context.MyProject.Remove(myProject);
+            var myProject = await _context.MyProjects.FindAsync(id);
+            _context.MyProjects.Remove(myProject);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MyProjectExists(int id)
         {
-            return _context.MyProject.Any(e => e.Id == id);
+            return _context.MyProjects.Any(e => e.Id == id);
         }
     }
 }
