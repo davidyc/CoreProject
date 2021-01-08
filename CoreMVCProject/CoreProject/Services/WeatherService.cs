@@ -15,13 +15,7 @@ namespace CoreProject.Services
         private readonly string _apiid;
         private readonly string _units;
         private readonly string _lang;
-        public WeatherService()
-        {
-            _units = "metric";
-            _lang = "ru";
-            _url = "https://api.openweathermap.org/data/2.5/weather";
-            _apiid = "1c0fce73161e75da30ec9fcabf2a1b9c";
-        }
+       
         public WeatherService(string url, string apiid, string units, string lang)
         {
             _units = units;
