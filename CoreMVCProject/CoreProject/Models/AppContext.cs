@@ -31,8 +31,6 @@ namespace CoreProject.Models
           
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        public DbSet<CoreProject.Models.AppModel.MyProject> MyProject { get; set; }
+        }        
     }
 }
