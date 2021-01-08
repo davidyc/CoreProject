@@ -1,4 +1,4 @@
-using CoreProject.Models;
+﻿using CoreProject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using CoreProject.Services.Interfaces;
+using CoreProject.Services;
 
 namespace CoreProject
 {
@@ -32,7 +34,9 @@ namespace CoreProject
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>                 {
                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-               });
+               });         
+          //  services.AddScoped<WeatherService>(); // может быть удалить
+            services.AddTransient<WeatherService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
