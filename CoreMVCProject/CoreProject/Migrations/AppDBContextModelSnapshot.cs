@@ -47,7 +47,7 @@ namespace CoreProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyProject");
+                    b.ToTable("MyProjects");
                 });
 
             modelBuilder.Entity("CoreProject.Models.AppModel.Role", b =>
@@ -127,7 +127,12 @@ namespace CoreProject.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
+                    b.Property<int?>("UserAdditionalInfoId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserAdditionalInfoId");
 
                     b.ToTable("Users");
                 });
@@ -147,6 +152,13 @@ namespace CoreProject.Migrations
                     b.ToTable("RoleUser");
                 });
 
+            modelBuilder.Entity("CoreProject.Models.User", b =>
+                {
+                    b.HasOne("CoreProject.Models.AppModel.UserAdditionalInfo", null)
+                        .WithMany("Users")
+                        .HasForeignKey("UserAdditionalInfoId");
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("CoreProject.Models.AppModel.Role", null)
@@ -160,6 +172,11 @@ namespace CoreProject.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CoreProject.Models.AppModel.UserAdditionalInfo", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

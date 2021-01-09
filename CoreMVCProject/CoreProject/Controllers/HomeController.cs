@@ -28,8 +28,8 @@ namespace CoreProject.Controllers
 
         public IActionResult Index()
         {            
-            var curWeather = _weatherService.GetCurrentWeather("Аршалы");
-            var x = curWeather.Main.Temp;
+            //var curWeather = _weatherService.GetCurrentWeather("Аршалы");
+            //var x = curWeather.Main.Temp;
         
             return View();
         }

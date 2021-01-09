@@ -9,7 +9,7 @@ namespace CoreProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "MyProject",
+                name: "MyProjects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -22,7 +22,7 @@ namespace CoreProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MyProject", x => x.Id);
+                    table.PrimaryKey("PK_MyProjects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,6 +39,19 @@ namespace CoreProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserAdditionalInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    City = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAdditionalInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -49,11 +62,18 @@ namespace CoreProject.Migrations
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     DateBorn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastLogin = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    Password = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    Password = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    UserAdditionalInfoId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_UserAdditionalInfos_UserAdditionalInfoId",
+                        column: x => x.UserAdditionalInfoId,
+                        principalTable: "UserAdditionalInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,12 +114,17 @@ namespace CoreProject.Migrations
                 name: "IX_RoleUser_UsersId",
                 table: "RoleUser",
                 column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserAdditionalInfoId",
+                table: "Users",
+                column: "UserAdditionalInfoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MyProject");
+                name: "MyProjects");
 
             migrationBuilder.DropTable(
                 name: "RoleUser");
@@ -109,6 +134,9 @@ namespace CoreProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserAdditionalInfos");
         }
     }
 }

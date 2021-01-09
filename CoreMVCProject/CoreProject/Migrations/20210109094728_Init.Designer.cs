@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreProject.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20210108061926_Init")]
+    [Migration("20210109094728_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace CoreProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyProject");
+                    b.ToTable("MyProjects");
                 });
 
             modelBuilder.Entity("CoreProject.Models.AppModel.Role", b =>
@@ -84,6 +84,21 @@ namespace CoreProject.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CoreProject.Models.AppModel.UserAdditionalInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAdditionalInfos");
+                });
+
             modelBuilder.Entity("CoreProject.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -114,7 +129,12 @@ namespace CoreProject.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
+                    b.Property<int?>("UserAdditionalInfoId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserAdditionalInfoId");
 
                     b.ToTable("Users");
                 });
@@ -134,6 +154,13 @@ namespace CoreProject.Migrations
                     b.ToTable("RoleUser");
                 });
 
+            modelBuilder.Entity("CoreProject.Models.User", b =>
+                {
+                    b.HasOne("CoreProject.Models.AppModel.UserAdditionalInfo", null)
+                        .WithMany("Users")
+                        .HasForeignKey("UserAdditionalInfoId");
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("CoreProject.Models.AppModel.Role", null)
@@ -147,6 +174,11 @@ namespace CoreProject.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CoreProject.Models.AppModel.UserAdditionalInfo", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
