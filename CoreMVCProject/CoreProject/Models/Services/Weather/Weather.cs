@@ -8,7 +8,7 @@ namespace CoreProject.Models.Services.Weather
     public class Weather
     {
         public Coord Coord { get; set; }
-        public WeatherInfo[] WeatherInfos { get; set; }
+        public WeatherInfo[] weather { get; set; }
         public string Base { get; set; }
         public MainInfo Main { get; set; }
         public string Visibility { get; set; }

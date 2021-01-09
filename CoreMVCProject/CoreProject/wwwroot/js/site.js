@@ -5,6 +5,7 @@
 $(document).ready(function () {
     $('#UserMainInfoDiv > a').hide()   
     $('#UserAddInfoDiv > a').hide()
+    $('#SetCityBTN').hide()
     var checked = $('#EditURLDIVCB').is(':checked');
     if (checked) {
         $('#URLINPUTDETAIL').show();
@@ -12,9 +13,7 @@ $(document).ready(function () {
     else {
         $('#URLINPUTDETAIL').hide();
     }
-    $('#URLInput').hide()
-
-    
+    $('#URLInput').hide()    
 });
 
 $(document).ready(function () {
@@ -46,5 +45,12 @@ $(document).ready(function () {
         }       
     });
 });
+
+$(document).ready(function () {
+    $("#CITYname").click(function () {
+        $('#SetCityBTN').slideToggle(200)
+    });
+});
+
 
 

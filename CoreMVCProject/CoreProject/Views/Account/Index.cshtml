@@ -60,11 +60,17 @@
             <h4>No informaion about user city</h4>
             <hr />
             <p>No informaion</p>
-
         }
         else
         {
-            <h4>Weather in @Model.Weather.Name</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 id="CITYname">Weather in @Model.Weather.Name</h4>
+                </div>
+                <div class="col-sm-6" id="SetCityBTN">
+                    <button class="btn-primary">Set city</button>
+                </div>
+            </div>
             <hr />
             @if (Model.Weather == null)
             {
@@ -72,21 +78,47 @@
             }
             else
             {
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p>T : @Model.Weather.Main.Temp C</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <p>Feel like: @Model.Weather.Main.Feels_Like C</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <p>Wind speed: @Model.Weather.Wind.Speed m/s</p>
-                    </div>
-                </div>                
+                <div class="row">                   
+                        <div class="container-fluid">
+                            <div class="card p-4">
+                                <div class="row">
+                                    <div class="temp-details col-md-4">
+                                        <h6>@Model.Weather.Name</h6>
+                                        <h1 class="mb-0 font-weight-bold" id="heading">@Model.Weather.Main.Temp° C </h1>
+                                        <span class="small grey"> @Model.Weather.weather?.FirstOrDefault()?.Main</span>
+                                    </div>
+
+                                    <div class="temp-details col-md-4">
+                                        <p class="my-1">
+                                            <img src="https://i.imgur.com/B9kqOzp.png" height="17px">
+                                            <span>  @Model.Weather.Wind.Speed m/s </span>
+                                        </p>
+                                        <p class="my-1">
+                                            <i class="fa fa-tint mr-2" aria-hidden="true"></i>
+                                            <span> @Model.Weather.Main.Humidity% </span>
+                                        </p>
+                                        <p class="my-1">
+                                            <img src="https://i.imgur.com/wGSJ8C5.png" height="17px">
+                                            <span> 0h </span>
+                                        </p>
+                                    </div>
+                                    @{
+//add more icon
+                                        if (@Model.Weather.weather?.FirstOrDefault()?.Main == "Clear")
+                                        {
+                                            <div class="col-md-4"> <img src=" https://previews.123rf.com/images/bentosi/bentosi1811/bentosi181100030/127324934-sunny-weather-icon-sun-icon-vector-illustration-flat-design.jpg" width="100px"> </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-4"> <img src="https://i.imgur.com/Qw7npIg.png" width="100px"> </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>                       
+                </div>
             }
         }
     </div>
-</div>
-<div>
-
 </div>
