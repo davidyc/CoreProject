@@ -5,50 +5,85 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details about @User.Identity.Name</h1>
 
-<div id="UserMainInfoDiv">
-    <h4>User Main Info</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Login)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Login)
-        </dd>
-       
-    </dl>
-    <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@Model.User.Id">Change Password</a>
-    <a class="btn btn-primary" asp-action="ChangeLogin" asp-route-id="@Model.User.Id">Change Login</a>
+
+<div class="row">
+    <div class="col-sm-6">
+        <h1>Details about @User.Identity.Name</h1>
+        <div id="UserMainInfoDiv">
+            <h4>User Main Info</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.Login)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.Login)
+                </dd>
+
+            </dl>
+            <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@Model.User.Id">Change Password</a>
+            <a class="btn btn-primary" asp-action="ChangeLogin" asp-route-id="@Model.User.Id">Change Login</a>
+        </div>
+
+        <div id="UserAddInfoDiv">
+            <h4>User Additional Info</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.PhoneNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.PhoneNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.DateBorn)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.DateBorn)
+                </dd>
+            </dl>
+            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.User.Id">Edit</a>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <h1>Additional services</h1>
+        @if (Model.User.UserAdditionalInfo == null || Model.User.UserAdditionalInfo.City == null)
+        {
+            <h4>No informaion about user city</h4>
+            <hr />
+            <p>No informaion</p>
+
+        }
+        else
+        {
+            <h4>Weather in @Model.User.UserAdditionalInfo.City</h4>
+            <hr />
+            @if (Model.Weather == null)
+            {
+                <p>Server cann't get information</p>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Temp     : @Model.Weather.Main.Temp C</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Feel like: @Model.Weather.Main.Feels_Like C</p>
+                    </div>       
+                </div>
+            }
+        }
+    </div>
 </div>
-
-<div id="UserAddInfoDiv">
-    <h4>User Additional Info</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.DateBorn)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.DateBorn)
-        </dd> 
-    </dl>
-    <a class="btn btn-primary"  asp-action="Edit" asp-route-id="@Model.User.Id">Edit</a>
-</div>
-
 <div>
 
 </div>
