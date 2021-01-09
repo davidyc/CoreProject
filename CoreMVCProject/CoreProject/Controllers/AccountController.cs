@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using CoreProject.Models.AppModel;
+using CoreProject.Services;
 
 namespace CoreProject.Controllers
 {
@@ -21,11 +22,15 @@ namespace CoreProject.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly AppDBContext _context;
+        private readonly WeatherService _weatherService;
 
-        public AccountController(ILogger<AccountController> logger, AppDBContext context)
+        private const string NOCITY = "No info";
+
+        public AccountController(ILogger<AccountController> logger, AppDBContext context, WeatherService weatherService)
         {
             _context = context;
             _logger = logger;
+            _weatherService = weatherService;
         }
 
         public async Task<IActionResult> Index()
@@ -37,6 +42,16 @@ namespace CoreProject.Controllers
             {
                 return NotFound();
             }
+
+            var city = GetCity();
+            if (!city.Equals(NOCITY))
+            {
+                var curWeather = _weatherService.GetCurrentWeather(city);
+                var x = curWeather.Main.Temp;
+                ViewData["temp"] = x;
+            }
+
+
 
             return View(user);            
         }
@@ -263,6 +278,17 @@ namespace CoreProject.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        private string GetCity()
+        {
+            var addInfo = _context.UserAdditionalInfos.FirstOrDefault(x => x.User.Login == HttpContext.User.Identity.Name);
+            if (addInfo.City == null)
+            {
+                return NOCITY;
+            }
+
+            return addInfo.City;
         }
 
     }
