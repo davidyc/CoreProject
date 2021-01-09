@@ -66,6 +66,8 @@ namespace CoreProject.Controllers
             if (ModelState.IsValid)
             {
                 Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                var addInfo = new UserAdditionalInfo();
+                user.UserAdditionalInfo = addInfo;
                 if (userRole != null)
                 {
                     user.Roles.Add(userRole);

@@ -19,6 +19,8 @@ namespace CoreProject.Controllers
         private readonly AppDBContext _db;
         private readonly WeatherService _weatherService;
 
+        private const string NOCITY = "No info";
+
         public HomeController(ILogger<HomeController> logger, AppDBContext context, WeatherService weatherService)
         {
             _logger = logger;
@@ -27,9 +29,14 @@ namespace CoreProject.Controllers
         }
 
         public IActionResult Index()
-        {            
-            //var curWeather = _weatherService.GetCurrentWeather("Аршалы");
-            //var x = curWeather.Main.Temp;
+        {
+            var city = GetCity();
+            if (!city.Equals(NOCITY))
+            {
+                var curWeather = _weatherService.GetCurrentWeather(city);
+                var x = curWeather.Main.Temp;
+            }
+           
         
             return View();
         }
@@ -44,5 +51,16 @@ namespace CoreProject.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private string GetCity()
+        {
+            var addInfo =_db.UserAdditionalInfos.FirstOrDefault(x => x.User.Login ==  HttpContext.User.Identity.Name);
+            if(addInfo.City == null) 
+            {
+                return NOCITY;
+            }
+
+            return addInfo.City;
+        } 
     }
 }

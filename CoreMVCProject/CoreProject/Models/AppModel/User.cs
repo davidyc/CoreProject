@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CoreProject.Models
 {
     public class User
-    {
+    {        
         public int Id { get; set; }
         [StringLength(35)]
         [Required]
@@ -28,6 +28,7 @@ namespace CoreProject.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public UserAdditionalInfo UserAdditionalInfo { get; set; }
         public List<Role> Roles { get; set; }
         public User()
         {

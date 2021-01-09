@@ -216,6 +216,8 @@ namespace CoreProject.Controllers
                     }
                         
                     user.LastLogin = DateTime.UtcNow;
+                    var addInfo = new UserAdditionalInfo();
+                    user.UserAdditionalInfo = addInfo;
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();       
 
