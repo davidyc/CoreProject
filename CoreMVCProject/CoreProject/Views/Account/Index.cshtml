@@ -1,4 +1,4 @@
-﻿@model CoreProject.Models.User
+﻿@model CoreProject.Models.ViewModel.UserAccountViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -12,15 +12,15 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
+            @Html.DisplayNameFor(model => model.User.Login)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Login)
+            @Html.DisplayFor(model => model.User.Login)
         </dd>
        
     </dl>
-    <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@Model.Id">Change Password</a>
-    <a class="btn btn-primary" asp-action="ChangeLogin" asp-route-id="@Model.Id">Change Login</a>
+    <a class="btn btn-primary" asp-action="ChangePassword" asp-route-id="@Model.User.Id">Change Password</a>
+    <a class="btn btn-primary" asp-action="ChangeLogin" asp-route-id="@Model.User.Id">Change Login</a>
 </div>
 
 <div id="UserAddInfoDiv">
@@ -28,25 +28,25 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.User.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.User.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.User.PhoneNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.User.PhoneNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateBorn)
+            @Html.DisplayNameFor(model => model.User.DateBorn)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateBorn)
+            @Html.DisplayFor(model => model.User.DateBorn)
         </dd> 
     </dl>
-    <a class="btn btn-primary"  asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="btn btn-primary"  asp-action="Edit" asp-route-id="@Model.User.Id">Edit</a>
 </div>
 
 <div>

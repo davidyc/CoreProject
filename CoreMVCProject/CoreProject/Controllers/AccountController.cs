@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using CoreProject.Models.AppModel;
 using CoreProject.Services;
+using CoreProject.Models.Services.Weather;
 
 namespace CoreProject.Controllers
 {
@@ -34,7 +35,9 @@ namespace CoreProject.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {                 
+        {
+            Weather tmpWeather = null;
+            var uavm = new UserAccountViewModel();
             var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Login == HttpContext.User.Identity.Name);
 
@@ -46,14 +49,13 @@ namespace CoreProject.Controllers
             var city = GetCity();
             if (!city.Equals(NOCITY))
             {
-                var curWeather = _weatherService.GetCurrentWeather(city);
-                var x = curWeather.Main.Temp;
-                ViewData["temp"] = x;
+               tmpWeather = _weatherService.GetCurrentWeather(city);
             }
 
+            uavm.User = user;
+            uavm.Weather = tmpWeather;
 
-
-            return View(user);            
+            return View(uavm);            
         }
 
         public async Task<IActionResult> Edit(int? id)
