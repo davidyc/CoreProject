@@ -64,7 +64,7 @@
         }
         else
         {
-            <h4>Weather in @Model.User.UserAdditionalInfo.City</h4>
+            <h4>Weather in @Model.Weather.Name</h4>
             <hr />
             @if (Model.Weather == null)
             {
@@ -73,13 +73,16 @@
             else
             {
                 <div class="row">
-                    <div class="col-sm-6">
-                        <p>Temp     : @Model.Weather.Main.Temp C</p>
+                    <div class="col-sm-4">
+                        <p>T : @Model.Weather.Main.Temp C</p>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <p>Feel like: @Model.Weather.Main.Feels_Like C</p>
-                    </div>       
-                </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>Wind speed: @Model.Weather.Wind.Speed m/s</p>
+                    </div>
+                </div>                
             }
         }
     </div>
