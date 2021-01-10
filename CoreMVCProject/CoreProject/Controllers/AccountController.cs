@@ -282,6 +282,21 @@ namespace CoreProject.Controllers
             return View();
         }
 
+        public IActionResult ChangeUserCity()
+        {
+            var addInfp = _context.UserAdditionalInfos.FirstOrDefault(x=>x.User.Login == HttpContext.User.Identity.Name);
+            return View(addInfp);
+        }
+       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeUserCity(UserAdditionalInfo model)
+        {
+            _context.Update(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         private string GetCity()
         {
             var addInfo = _context.UserAdditionalInfos.FirstOrDefault(x => x.User.Login == HttpContext.User.Identity.Name);

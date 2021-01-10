@@ -65,16 +65,16 @@
         {
             <div class="row">
                 <div class="col-sm-6">
-                    <h4 id="CITYname">Weather in @Model.Weather.Name</h4>
+                    <h4 id="CITYname">Weather</h4>
                 </div>
                 <div class="col-sm-6" id="SetCityBTN">
-                    <button class="btn-primary">Set city</button>
+                    <a class="btn btn-primary" asp-action="ChangeUserCity">Set city</a>
                 </div>
             </div>
             <hr />
-            @if (Model.Weather == null)
+            @if (Model.Weather.Cod == "404")
             {
-                <p>Server cann't get information</p>
+                <p>Service cann't get information</p>
             }
             else
             {
@@ -85,7 +85,7 @@
                                     <div class="temp-details col-md-4">
                                         <h6>@Model.Weather.Name</h6>
                                         <h1 class="mb-0 font-weight-bold" id="heading">@Model.Weather.Main.Temp° C </h1>
-                                        <span class="small grey"> @Model.Weather.weather?.FirstOrDefault()?.Main</span>
+                                        <span class="small grey"> @Model.Weather.weather?.FirstOrDefault().Main</span>
                                     </div>
 
                                     <div class="temp-details col-md-4">
